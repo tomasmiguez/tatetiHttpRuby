@@ -1,0 +1,1 @@
+require 'tateti_server'
