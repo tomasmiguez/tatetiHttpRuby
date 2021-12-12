@@ -45,6 +45,7 @@ class Tateti
     raise TatetiError.new("Invalid square <#{ position.join(", ") }>")  unless position_x.between?(0, 2) and position_y.between?(0, 2)
     raise TatetiError.new("The square <#{ position.join(", ") }> is already occupied") unless @board[position_x][position_y] == :empty_square
     raise TatetiError.new("It's not player <#{ player }> turn to play") if player != @next_player
+    raise TatetiError.new("Game ended") if @winner
 
     board[position_x][position_y] = player
 

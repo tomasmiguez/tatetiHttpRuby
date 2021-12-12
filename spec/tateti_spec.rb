@@ -69,15 +69,27 @@ RSpec.describe Tateti, "#ending" do
   end
 
   context "a player won with complete row" do
-    it "game ended" do
+    before(:each) do
       @tateti.play(0, [0, 0])
       @tateti.play(1, [1, 0])
       @tateti.play(0, [0, 1])
       @tateti.play(1, [1, 1])
       @tateti.play(0, [0, 2])
+    end
 
+    it "game ended" do
       expect(@tateti.ended?).to eq true
     end
+
+    it "another move cannot be made" do
+      expect {
+        @tateti.play(1, [1, 2])
+      }.to raise_error(TatetiError)
+    end
+
+    it "the correct player is the winner" do
+      expect(@tateti.winner).to eq 0
+    end 
   end
 
   context "a player won with complete column" do
