@@ -7,11 +7,14 @@ class Tateti
   attr_reader :winner
   attr_reader :turn
 
-  def initialize
+  def initialize(player1: 0, player2: 1)
     @board = Array.new(3) { Array.new(3, :empty_square)}
-    @next_player = 0
     @turn = 0
     @winner = nil
+
+    @player1 = player1
+    @player2 = player2
+    @next_player = @player1
   end
 
   def was_winning_move?(position)
@@ -53,7 +56,7 @@ class Tateti
       @winner = was_winning_move?(position)
     end
 
-    @next_player = (@next_player + 1) % 2
+    @next_player = @next_player == @player1 ? @player2 : @player1
     @turn += 1
   end
 
