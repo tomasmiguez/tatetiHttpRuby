@@ -14,6 +14,10 @@ get '/gameStarted/?' do
   {gameStarted: @tateti_facade.gameStarted?}.to_json
 end
 
+post '/restartGame' do
+  @tateti_facade = TatetiFacade.new
+end
+
 post '/addPlayer' do
   {gameStatus: @tateti_facade.addPlayer(params['player'].to_sym)}.to_json
 end

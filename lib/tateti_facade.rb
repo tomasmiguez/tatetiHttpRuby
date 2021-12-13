@@ -4,9 +4,10 @@ class TatetiFacade
   attr_reader :tateti
   attr_reader :player1
   attr_reader :player2
+  attr_reader :game_status
 
   def initialize
-    @tateti = nil
+    @game_status = "Waiting for players."
   end
 
   def gameStarted?
@@ -18,12 +19,13 @@ class TatetiFacade
 
     if !@player1 
       @player1 = player
-      return "Waiting for second player."
+      @game_status = "Waiting for second player."
     else 
       @player2 = player
       @tateti = Tateti.new(player1: @player1, player2: @player2)
-      return "Game ready"
-    end
+      @game_status = "Game ready."
+    
+    return @game_status
   end
 end
 
