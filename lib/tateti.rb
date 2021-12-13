@@ -3,7 +3,6 @@ class Tateti
   Right_left_diagonal_positions = [[0,2], [1,1], [2,0]]
 
   attr_reader :board
-  attr_reader :next_player
   attr_reader :winner
   attr_reader :turn
 
