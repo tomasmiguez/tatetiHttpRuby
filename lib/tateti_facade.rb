@@ -16,10 +16,13 @@ class TatetiFacade
   def addPlayer(player)
     raise TatetiFacadeError.new("Game already started") if @tateti
 
-    if !@player1 then @player1 = player
+    if !@player1 
+      @player1 = player
+      return "Waiting for second player."
     else 
       @player2 = player
       @tateti = Tateti.new(player1: @player1, player2: @player2)
+      return "Game ready"
     end
   end
 end

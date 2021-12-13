@@ -15,5 +15,5 @@ get '/gameStarted/?' do
 end
 
 post '/addPlayer' do
-  @tateti_facade.addPlayer(params['player'])
+  {gameStatus: @tateti_facade.addPlayer(params['player'].to_sym)}.to_json
 end
