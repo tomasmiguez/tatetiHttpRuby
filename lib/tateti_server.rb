@@ -34,7 +34,7 @@ end
 post '/play' do
   player = params['player'].to_sym
   position = [params['x'].to_i, params['y'].to_i]
-  settings.tateti_facade.tateti.play(player, position)
+  settings.tateti_facade.play(player, position)
 
   return settings.tateti_facade.boardWithSymbols.to_json
 end

@@ -5,6 +5,7 @@ class TatetiFacade
   attr_reader :player1
   attr_reader :player2
   attr_reader :game_status
+  attr_reader :winner
 
   def initialize
     @game_status = "Waiting for players."
@@ -41,6 +42,13 @@ class TatetiFacade
                                   end
                                 }
                       }
+  end
+
+  def play(player, position)
+    @winner = @tateti.play(player, position)
+    if @winner then
+      @game_status = "Game finished, the winner is #{@winner}."
+    end
   end
 end
 

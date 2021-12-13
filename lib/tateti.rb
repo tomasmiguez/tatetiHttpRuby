@@ -59,6 +59,8 @@ class Tateti
 
     @next_player = @next_player == @player1 ? @player2 : @player1
     @turn += 1
+
+    return @winner
   end
 
   def ended?
