@@ -24,8 +24,23 @@ class TatetiFacade
       @player2 = player
       @tateti = Tateti.new(player1: @player1, player2: @player2)
       @game_status = "Game ready."
+    end
     
     return @game_status
+  end
+
+  def boardWithSymbols()
+    @tateti.board.map { |row| 
+                        row.map { |square| 
+                                  if square == @player1 then
+                                    "X"
+                                  elsif square == @player2 then
+                                    "O"
+                                  else
+                                    square
+                                  end
+                                }
+                      }
   end
 end
 
