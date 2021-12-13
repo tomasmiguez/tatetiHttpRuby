@@ -1,4 +1,4 @@
-require 'tateti'
+require_relative 'tateti.rb'
 
 class TatetiFacade
   attr_reader :tateti

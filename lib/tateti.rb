@@ -7,6 +7,8 @@ class Tateti
   attr_reader :turn
 
   def initialize(player1: 0, player2: 1)
+    raise TatetiError.new("Players can't be the same.") if player1 == player2
+
     @board = Array.new(3) { Array.new(3, :empty_square)}
     @turn = 0
     @winner = nil

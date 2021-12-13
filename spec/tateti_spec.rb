@@ -128,3 +128,11 @@ RSpec.describe Tateti, "#ending" do
     end
   end
 end
+
+RSpec.describe Tateti, "#custom players" do
+  it "players can't be the same" do
+    expect {
+      @tateti = Tateti.new(player1: :Pedro, player2: :Pedro)
+    }.to raise_error(TatetiError)
+  end
+end
