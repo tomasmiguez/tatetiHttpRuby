@@ -1,21 +1,21 @@
-class Tateti
+require 'redis_model'
+
+class Board < RedisModel
   Left_right_diagonal_positions = [[0,0], [1,1], [2,2]]
   Right_left_diagonal_positions = [[0,2], [1,1], [2,0]]
 
-  attr_reader :board
-  attr_reader :winner
-  attr_reader :turn
+  redis_attr_accessor :board, :winner, :turn
 
-  def initialize(player1: 0, player2: 1)
-    raise TatetiError.new("Players can't be the same.") if player1 == player2
+  def initialize(id)
+    if REDIS.exists("Board:#{id}") == 0
+      board ||= Array.new(3) { Array.new(3, :empty_square)}
+      turn ||= 0
+      winner ||= nil
 
-    @board = Array.new(3) { Array.new(3, :empty_square)}
-    @turn = 0
-    @winner = nil
+      next_player = 0
+    end
 
-    @player1 = player1
-    @player2 = player2
-    @next_player = @player1
+    super id
   end
 
   def was_winning_move?(position)

@@ -1,1 +1,1 @@
-require 'tateti_server'
+# require 'tateti_server'
