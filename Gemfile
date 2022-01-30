@@ -15,3 +15,7 @@ gem "pry", "~> 0.14.1"
 gem "rspec", "~> 3.10"
 
 gem "sinatra", "~> 2.1"
+
+gem "thin", "~> 1.8"
+
+gem "rack", "~> 2.2"

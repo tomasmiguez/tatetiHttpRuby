@@ -1,40 +1,39 @@
-require 'sinatra'
-require_relative 'tateti_facade.rb'
+require 'rack'
 
-helpers do
-  def return_status()
-    {gameStatus: settings.tateti_facade.game_status}.to_json
+class GraphQLServer
+  def initialize(schema:, context: {})
+    @schema = schema
+    @context = context
   end
-end
 
-set :tateti_facade, TatetiFacade.new
+  def response(status: 200, response:)
+    [
+      200,
+      {
+        'Content-Type' => 'application/json',
+        'Content-Length' => response.bytesize.to_s
+      },
+      [response]
+    ]
+  end
 
-before do
-  content_type :json
-end
+  def call(env)
+    request = Rack::Request.new(env)
+    payload = if request.get?
+      request.params
+    elsif request.post?
+      body = request.body.read
+      JSON.parse(body)
+    end
 
-get '/gameStarted' do
-  {gameStarted: settings.tateti_facade.gameStarted?}.to_json
-end
+    [403, nil, nil] unless payload
 
-get '/gameStatus' do
-  return_status
-end
+    result = @schema.execute(
+      payload['query'],
+      variables: payload['variables'],
+      operation_name: payload['operationName']
+    ).to_json
 
-post '/restartGame' do
-  settings.tateti_facade = TatetiFacade.new
-  return_status
-end
-
-post '/addPlayer' do
-  settings.tateti_facade.addPlayer(params['player'].to_sym)
-  return_status
-end
-
-post '/play' do
-  player = params['player'].to_sym
-  position = [params['x'].to_i, params['y'].to_i]
-  settings.tateti_facade.play(player, position)
-
-  return settings.tateti_facade.boardWithSymbols.to_json
+    response(status: 200, response: result)
+  end
 end

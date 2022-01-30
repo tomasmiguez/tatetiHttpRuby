@@ -1,8 +1,6 @@
 require 'redis'
 require 'base64'
 
-REDIS = Redis.new
-REDIS.flushall
 class RedisModel
   class << self
     def redis_attr_accessor(*attributes)
