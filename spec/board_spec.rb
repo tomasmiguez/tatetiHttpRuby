@@ -6,7 +6,8 @@ end
 
 RSpec.describe Board, "#play" do
   before(:each) do
-    @board = Board.new
+    Redis.new.flushall
+    @board = Board.new(1)
   end
 
   context "just created" do
@@ -25,13 +26,13 @@ RSpec.describe Board, "#play" do
     it "first player can't play invalid square" do
       expect {
         @board.play(0, [5, 0])
-      }.to raise_error(TatetiError)
+      }.to raise_error(BoardError)
     end
 
     it "second player can't play first" do
       expect {
         @board.play(1, [0, 0])
-      }.to raise_error(TatetiError)
+      }.to raise_error(BoardError)
     end
   end
 
@@ -52,14 +53,15 @@ RSpec.describe Board, "#play" do
 
       expect {
         @board.play(1, [0, 0])
-      }.to raise_error(TatetiError)
+      }.to raise_error(BoardError)
     end
   end
 end
 
 RSpec.describe Board, "#ending" do
   before(:each) do
-    @board = Board.new
+    Redis.new.flushall
+    @board = Board.new(1)
   end
 
   context "just created" do
@@ -84,7 +86,7 @@ RSpec.describe Board, "#ending" do
     it "another move cannot be made" do
       expect {
         @board.play(1, [1, 2])
-      }.to raise_error(TatetiError)
+      }.to raise_error(BoardError)
     end
 
     it "the correct player is the winner" do

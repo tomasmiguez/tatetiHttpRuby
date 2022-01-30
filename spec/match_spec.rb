@@ -21,7 +21,6 @@ RSpec.describe Match do
     end
 
     it "can't add player to a full game" do
-      binding.pry
       @match.addPlayer(:Pablo)
       @match.addPlayer(:Paola)
 

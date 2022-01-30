@@ -5,15 +5,44 @@ module Types
   end
 
   class BoardType < Types::BaseObject
-    field :board, [[Boolean]]
+    field :board, [[String]],
+      method: :print_board
   end
 
   class MatchType < Types::BaseObject
     description "A tateti match"
     field :id, ID, null: false
     field :board, BoardType
+    field :status, String
   end
+end
 
+module Mutations
+  class JoinMatch  < GraphQL::Schema::Mutation
+    argument :player, String, required: true
+
+    field :match, ::Types::MatchType, null: true
+    field :errors, [String], null: false
+
+    def resolve(player:)
+      begin
+        match = Match.new(1)  
+        match.addPlayer(player) 
+        {
+          match: match,
+          errors: []
+        }
+      rescue StandardError => e
+        {
+          match: nil,
+          errors: [e.message]
+        }
+      end
+    end
+  end
+end
+
+module Types
   class QueryType < Types::BaseObject
     description "The query root of this schema"
 
@@ -28,8 +57,12 @@ module Types
     end
   end
 
+  class MutationType < Types::BaseObject
+    field :join_match, mutation: Mutations::JoinMatch 
+  end
 end
 
 class Schema < GraphQL::Schema
   query Types::QueryType
+  mutation Types::MutationType
 end 
