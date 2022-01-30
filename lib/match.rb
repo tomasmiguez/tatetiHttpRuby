@@ -19,7 +19,7 @@ class Match < RedisModel
     if !player0 
       self.player0 = player
       self.status = "Waiting for second player."
-    elsif !player1
+    else
       self.player1 = player
       self.board_id = id
       self.board = Board.new(board_id)
@@ -30,7 +30,8 @@ class Match < RedisModel
   end
 
   def play(player, position)
-    winner = board.play(player, position)
+    player_number = (player == player0) ? 0 : 1
+    winner = board.play(player_number, position)
     if winner then
       self.status = "Game finished, the winner is #{winner}."
     end

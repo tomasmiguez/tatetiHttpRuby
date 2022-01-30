@@ -40,6 +40,11 @@ module Mutations
       end
     end
   end
+
+  class Play < GraphQL::Schema::Mutation
+    argument :player, String, required: true
+    argument :position, [], required: true
+  end
 end
 
 module Types
